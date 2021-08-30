@@ -63,7 +63,6 @@ function initPointsBuffers(gl){
 return points;
 }*/
 
-/*TODO*/
 function initLinesBuffers(gl){
     //Gjenbruk av linjer fra opgpave oppg2b
     let lineCoord = new Float32Array([
@@ -85,7 +84,6 @@ function initLinesBuffers(gl){
     return lines;
 }
 
-/*TODO*/
 function initLinesStripsBuffers(gl){
     let stripCoord = new Float32Array([
         0.1, 0.1,
