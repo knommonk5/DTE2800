@@ -5,16 +5,19 @@ let  VSHADER_SOURCE =
   'attribute vec3 a_Position;\n' +		//Dersom vec4 trenger vi ikke vec4(a_Position, 1.0) under.
   'uniform mat4 u_modelviewMatrix;\n' +
   'uniform mat4 u_projectionMatrix;\n' +
-  'void main() {\n' +
+	'attribute vec4 a_Color;'+
+ 'varying vec4 v_Color;'+
+	'void main() {' +
+	'v_Color = a_Color;\n' +
   '  gl_Position = u_projectionMatrix * u_modelviewMatrix * vec4(a_Position,1.0);\n' +
   '}\n';
 
 // Fragment shader program
 let  FSHADER_SOURCE =
   'precision mediump float;\n' +
-  'uniform vec4 u_FragColor;\n' + 	// bruker prefiks u_ for å indikere uniform
+  'uniform vec4 v_Color;\n' + 	// bruker prefiks u_ for å indikere uniform
   'void main() {\n' +
-  '  gl_FragColor = u_FragColor;\n' + // Fargeverdi.
+  '  gl_FragColor = v_Color;\n' + // Fargeverdi.
   '}\n';
 
 let  gl = null;
@@ -70,12 +73,15 @@ function initBuffer() {
 	vertexBuffer.numberOfItems = 3; // NB!!
 
 	gl.bindBuffer(gl.ARRAY_BUFFER, null);
+
+
 }
 
 function bindShaderParameters() {
 	// Kopler shaderparametre med Javascript-variabler:
 
 	// Farge: u_FragColor (bruker samme farge på alle piksler/fragmenter):
+/*
 	let  u_FragColor = gl.getUniformLocation(gl.program, 'u_FragColor');
 	if (u_FragColor < 0) {
 		console.log('Fant ikke uniform-parametret u_FragColor i shaderen!?');
@@ -84,6 +90,12 @@ function bindShaderParameters() {
 	let  rgba = [ 1.0, 1.0, 0.0, 1.0 ];
 	gl.uniform4f(u_FragColor, rgba[0], rgba[1], rgba[2], rgba[3]);
 	//gl.uniform4f(rgba);
+*/
+
+
+
+
+
 	// Matriser: u_modelviewMatrix & u_projectionMatrix
 	u_modelviewMatrix = gl.getUniformLocation(gl.program, 'u_modelviewMatrix');
 	u_projectionMatrix = gl.getUniformLocation(gl.program, 'u_projectionMatrix');
@@ -92,6 +104,7 @@ function bindShaderParameters() {
 }
 
 function draw() {
+
 
 	gl.clear(gl.COLOR_BUFFER_BIT);
 
@@ -171,7 +184,7 @@ function draw2() {
 	gl.enableVertexAttribArray(a_Position);
 
 
-	//Trekant 4, men får feil cords
+	//Trekant 4
 	modelMatrix.setTranslate(20, 20,1);
 	modelMatrix.rotate(-80, 0, 0, 1);
 	modelviewMatrix = viewMatrix.multiply(modelMatrix); // NB! rekkefølge!
@@ -180,6 +193,8 @@ function draw2() {
 }
 
 function main() {
+
+
 
 	if (!init())
 		return;
@@ -200,6 +215,7 @@ function main() {
 
 	// Setter bakgrunnsfarge:
 	gl.clearColor(0.3, 0.0, 0.4, 1.0); //RGBA
+
 
 	// Tegn!
 	draw();
