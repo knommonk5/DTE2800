@@ -56,6 +56,7 @@ function initPointsBuffers(gl) {
     let pointCoords1 = [];
 
     for(let i = 0; i < 20; i++){
+        //Alle koordinat verdiene holder seg i negativ verdi for å skille sektorer
         pointCoords1.push(Math.random()*-1);
     }
 
