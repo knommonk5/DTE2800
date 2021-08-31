@@ -2,6 +2,7 @@ let VSHADER_SOURCE = `
 	attribute vec4 a_Position;
 	attribute vec4 a_PointSize;
 	void main() {
+	  gl_PointSize = 4.0;
 	  gl_Position = vec4(0.0, 0.0, 0.0, 1.0);
 	  gl_Position = a_Position;
 	}`;
@@ -37,31 +38,40 @@ function main(){
     gl.clearColor(0.3, 0.0, 0.4, 1.0);
     gl.clear(gl.COLOR_BUFFER_BIT);
 
-
     //På tide å tegne:
-    /*TODO*/
-    //let points = initPointsBuffers(gl);
-    //gl.drawArrays(gl.POINTS, 0, points);
-
     let lines = initLinesBuffers(gl);
     gl.drawArrays(gl.LINES, 0, lines);
 
     let lineStrip = initLinesStripsBuffers(gl);
     gl.drawArrays(gl.LINE_STRIP, 0, lineStrip);
 
-    //let triangleStrip = initTriangleStripsBuffers(gl);
-    //gl.drawArrays(gl.TRIANGLE_STRIP, 0, triangleStrips);
+    let triangleStrip = initTriangleStripsBuffers(gl);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, triangleStrip);
+
+    let points = initPointsBuffers(gl);
+    gl.drawArrays(gl.POINTS, 0, points);
 }
 
-/*TODO*//*
-function initPointsBuffers(gl){
-    let a_Position = gl.getAttribLocation(gl.program, 'a_Position');
-    let a_PointSize = gl.getAttribLocation(gl.program, 'a_PointSize');
-    gl.vertexAttrib4f(a_Position, -1, 0, 0.0, 1.0);
-    gl.vertexAttrib1f(a_PointSize, 4);
+function initPointsBuffers(gl) {
+    let pointCoords1 = [];
 
-return points;
-}*/
+    for(let i = 0; i < 20; i++){
+        pointCoords1.push(Math.random()*-1);
+    }
+
+    let pointCoords2 = new Float32Array(pointCoords1)
+
+    let points = pointCoords2.length / 2;
+    let positionBufferL = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, positionBufferL);
+    gl.bufferData(gl.ARRAY_BUFFER, pointCoords2, gl.STATIC_DRAW);
+    let posAttribL = gl.getAttribLocation(gl.program, 'a_Position');
+    gl.vertexAttribPointer(posAttribL, 2, gl.FLOAT, false, 0, 0);
+    gl.enableVertexAttribArray(posAttribL);
+    gl.bindBuffer(gl.ARRAY_BUFFER, null);
+
+    return points;
+}
 
 function initLinesBuffers(gl){
     //Gjenbruk av linjer fra opgpave oppg2b
@@ -104,7 +114,24 @@ function initLinesStripsBuffers(gl){
     return lineStrip;
 }
 
-/*TODO*/
 function initTriangleStripsBuffers(gl){
+    let triangleStripCoord = new Float32Array([
+        0.1, -0.2,
+        0.4, -0.4,
+        0.2, -0.7,
+        0.8, -0.4,
+        0.9, -0.8,
 
+    ]);
+
+    let triangleStrip = triangleStripCoord.length / 2;
+    let positionBufferL = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, positionBufferL);
+    gl.bufferData(gl.ARRAY_BUFFER, triangleStripCoord, gl.STATIC_DRAW);
+    let posAttribL = gl.getAttribLocation(gl.program, 'a_Position');
+    gl.vertexAttribPointer(posAttribL, 2, gl.FLOAT, false, 0, 0);
+    gl.enableVertexAttribArray(posAttribL);
+    gl.bindBuffer(gl.ARRAY_BUFFER, null);
+
+    return triangleStrip;
 }
