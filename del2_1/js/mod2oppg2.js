@@ -57,7 +57,7 @@ function initPointsBuffers(gl) {
 
     for(let i = 0; i < 20; i++){
         //Alle koordinat verdiene holder seg i negativ verdi for å skille sektorer
-        pointCoords1.push(Math.random()*-1);
+        pointCoords1.push(-Math.random());
     }
 
     let pointCoords2 = new Float32Array(pointCoords1)
@@ -84,6 +84,7 @@ function initLinesBuffers(gl){
     ]);
 
     let lines = lineCoord.length / 2;
+
     let positionBufferL = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, positionBufferL);
     gl.bufferData(gl.ARRAY_BUFFER, lineCoord, gl.STATIC_DRAW);
@@ -122,7 +123,6 @@ function initTriangleStripsBuffers(gl){
         0.2, -0.7,
         0.8, -0.4,
         0.9, -0.8,
-
     ]);
 
     let triangleStrip = triangleStripCoord.length / 2;
